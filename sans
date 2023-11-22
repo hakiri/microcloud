@@ -1,0 +1,82 @@
+  <br/> 
+    <br/> 
+    <br/> 
+    <br/>
+
+	<div class="row">
+		<div class="column">
+			<div class="chart-container1" style="height:20vh; width:40vw">
+				<h1>Temperature</h1>
+				<canvas id="myChart1" style=" height: 65vh; background: #FEFEFE; border: 1px solid #555652; margin-top: 10px;"></canvas>
+			</div>
+		</div>
+		<div class="column">
+			<div class="chart-container2" style="height:20vh; width:40vw">
+				<h1>Humidity</h1>
+				<canvas id="myChart2" style=" height: 65vh; background: #FEFEFE; border: 1px solid #555652; margin-top: 10px;"></canvas>
+			</div>
+		</div>
+	</div>
+
+    <?php
+    while ($row = mysqli_fetch_array($resultat)) {
+
+	        $temperature = $temperature . '"' . $row['Temperature'] . '",';
+	        $humidity = $humidity . '"' . $row['Humidity'] . '",';
+	        $time = $time . '"' . $row['Timestamp'] . '",';
+        }
+
+        $temperature = trim($temperature, ",");
+        $humidity = trim($humidity, ",");
+        $time = trim($time, ",");
+
+
+    ?>
+
+
+    <script>
+
+       var ctx = document.getElementById('myChart1').getContext('2d');;
+       var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [<?php echo $Timestamp ?>],
+            datasets:[{
+                label: 'Temperature',
+                data: [<?php echo $temperature ?>],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 3
+            }]
+        },
+        options: {
+				scales: {
+					scales: {
+						yAxes: [{
+							display: true,
+							ticks: {
+								min: 0,
+								max: 400,
+								stepSize: 10
+							}
+						}],
+						xAxes: [{
+							display: true
+						}]
+					}
+				},
+				tooltips: {
+					mode: 'index'
+				},
+				legend: {
+					display: true,
+					position: 'top',
+					labels: {
+						fontColor: 'rgb(0,0,0)',
+						fontSize: 16
+					}
+				}
+			}
+       });
+
+    </script>
